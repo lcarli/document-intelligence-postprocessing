@@ -1,0 +1,14 @@
+.git*
+.azure
+.venv
+.test-packages
+tests
+examples
+docs
+.local
+artifacts
+local.settings.json
+requirements-dev.txt
+pyproject.toml
+README.md
+LICENSE

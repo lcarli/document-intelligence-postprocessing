@@ -1,0 +1,43 @@
+{
+  "version": "2.0",
+  "functionTimeout": "00:05:00",
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.32.0, 5.0.0)"
+  },
+  "extensions": {
+    "http": {
+      "routePrefix": "api",
+      "maxConcurrentRequests": 4,
+      "maxOutstandingRequests": 16
+    },
+    "durableTask": {
+      "hubName": "postprocessing",
+      "maxConcurrentActivityFunctions": 2,
+      "maxConcurrentOrchestratorFunctions": 4,
+      "storageProvider": {
+        "type": "azureManaged",
+        "connectionStringName": "DURABLE_TASK_SCHEDULER_CONNECTION_STRING"
+      },
+      "tracing": {
+        "traceInputsAndOutputs": false
+      }
+    }
+  },
+  "logging": {
+    "logLevel": {
+      "default": "Warning",
+      "Function": "Information",
+      "DurableTask.Core": "Warning",
+      "DurableTask.AzureManaged": "Warning",
+      "azure": "Warning"
+    },
+    "applicationInsights": {
+      "enableDependencyTracking": false,
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request;Exception"
+      }
+    }
+  }
+}

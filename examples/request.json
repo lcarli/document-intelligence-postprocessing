@@ -1,0 +1,10 @@
+{
+  "document": {
+    "name": "documents/synthetic-form.pdf",
+    "etag": "\"0x8D0000000000001\""
+  },
+  "analysis": {
+    "name": "analyses/synthetic-form.json",
+    "etag": "\"0x8D0000000000002\""
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "DURABLE_TASK_SCHEDULER_CONNECTION_STRING": "Endpoint=http://localhost:8080;TaskHub=postprocessing;Authentication=None",
+    "APP_BLOB_ACCOUNT_URL": "https://YOUR_ACCOUNT.blob.core.windows.net",
+    "APP_INPUT_CONTAINER": "postprocessing-inputs",
+    "APP_OUTPUT_CONTAINER": "postprocessing-outputs",
+    "APP_AUTH_TENANT_ID": "REPLACE_WITH_TENANT_UUID",
+    "APP_AUTH_AUDIENCE": "REPLACE_WITH_API_CLIENT_UUID",
+    "APP_AUTH_ALLOWED_CLIENT_IDS": "REPLACE_WITH_CALLER_CLIENT_UUID",
+    "APP_AUTH_REQUIRED_PERMISSION": "Postprocess.Run",
+    "CHECKBOX_VERIFIER_MODE": "shadow",
+    "CHECKBOX_SELECTED_THRESHOLD": "90",
+    "CHECKBOX_UNSELECTED_THRESHOLD": "150",
+    "APP_MAX_DOCUMENT_BYTES": "16777216",
+    "APP_MAX_ANALYSIS_BYTES": "8388608",
+    "APP_MAX_PAGES": "20",
+    "APP_MAX_PAGE_PIXELS": "16000000",
+    "APP_MAX_OBSERVATIONS": "5000"
+  }
+}
