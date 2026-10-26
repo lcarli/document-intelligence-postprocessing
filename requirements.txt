@@ -1,4 +1,4 @@
-azure-functions>=1.21,<2
+azure-functions>=1.25.0,<2
 azure-functions-durable>=1.2.9,<2
 azure-identity>=1.19,<2
 azure-storage-blob>=12.24,<13
