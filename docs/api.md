@@ -4,12 +4,20 @@ API prefix: `/api/v1`. All routes require an Entra v2 Bearer access token,
 the configured permission, an allowed caller application, and the correct tenant.
 Authorization is also checked for every status/result read.
 
+## Discover your input namespace
+
+`GET /context` returns `{"input_prefix": "owners/YOUR_OWNER_HASH/"}` for the
+authenticated caller. Upload both inputs under this exact prefix. The API rejects
+references to other owners' inputs even if their blob names and ETags are known.
+This endpoint does not issue Storage credentials.
+
 ## Submit a job
 
 `POST /jobs`, `Content-Type: application/json`.
 
 See `examples/request.json`. Only `document` and `analysis` are accepted.
 Each reference contains an exact relative blob `name` and a quoted `etag`.
+Names must start with the authenticated caller's `input_prefix`.
 No account, container, URL, credentials, arbitrary processor names, thresholds,
 or mode can be supplied by the caller.
 
@@ -139,7 +147,7 @@ be treated as an approved business decision.
 |---|---|
 | `400` | Invalid request JSON or schema. |
 | `401` | Missing, invalid, expired, or incorrectly signed access token. |
-| `403` | Valid token without the required caller, tenant, identity, or permission. |
+| `403` | Missing authorization, or a submission referencing another owner's input namespace. |
 | `404` | Unknown/invalid job ID, or a job owned by a different caller identity. |
 | `409` | Input version, stored metadata, or orchestration consistency problem. |
 | `413` | Submission body exceeds 8 KiB. |

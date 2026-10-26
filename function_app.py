@@ -13,7 +13,7 @@ from pydantic import ValidationError
 from postprocessing.auth import AuthorizationError, authenticate
 from postprocessing.config import settings
 from postprocessing.models import ProcessingError, ProcessorSpec, Submission
-from postprocessing.service import PostprocessingService, job_id
+from postprocessing.service import PostprocessingService, input_prefix, job_id
 from postprocessing.storage import BlobRepository, TransientStorageError
 from postprocessing.workflow import orchestrate
 
@@ -48,9 +48,22 @@ def error_response(error: Exception) -> func.HttpResponse:
     if isinstance(error, TransientStorageError):
         return response({"error": "temporarily_unavailable"}, 503)
     if isinstance(error, ProcessingError):
-        status = 404 if error.code in ("job_not_found", "invalid_job_id") else 409
+        status = (
+            403
+            if error.code == "input_namespace_forbidden"
+            else (404 if error.code in ("job_not_found", "invalid_job_id") else 409)
+        )
         return response({"error": error.code}, status)
     raise error
+
+
+@app.route(route="v1/context", methods=["GET"])
+async def caller_context(req: func.HttpRequest) -> func.HttpResponse:
+    try:
+        owner = await asyncio.to_thread(authenticate, req.headers.get("Authorization"), settings())
+        return response({"input_prefix": input_prefix(owner)})
+    except AuthorizationError as error:
+        return error_response(error)
 
 
 @app.route(route="v1/jobs", methods=["POST"])

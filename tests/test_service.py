@@ -67,6 +67,16 @@ def test_owner_bound_status_and_results(
         service.manifest("00000000-0000-4000-8000-000000000099")
 
 
+def test_cannot_submit_another_owners_inputs(submission: Submission) -> None:
+    service = PostprocessingService(MemoryRepository())
+    with pytest.raises(ProcessingError, match="input_namespace_forbidden"):
+        service.submit(
+            submission,
+            "owner-b",
+            {"grayscale_checkboxes": ProcessorSettings()},
+        )
+
+
 def test_invalid_inputs_fail_without_fake_success(
     synthetic: tuple[bytes, dict[str, Any]], submission: Submission
 ) -> None:

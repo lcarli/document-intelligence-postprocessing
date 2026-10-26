@@ -43,4 +43,4 @@ jobs:
       - name: Run offline example
         run: python examples/offline_demo.py
       - name: Check Function discovery
-        run: python -c "from function_app import app; assert len(app.get_functions()) == 6"
+        run: python -c "from function_app import app; assert len(app.get_functions()) == 7"

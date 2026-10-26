@@ -67,8 +67,14 @@ Host roles depend on the selected hosting/deployment topology; follow the
 Functions identity-based storage requirements rather than assuming that the
 application's input/output roles are sufficient.
 
-The calling application separately needs upload permission on the input
-container and its API permission. Do not give API callers direct access to the
+The calling application separately needs upload permission under its input
+namespace and its API permission. Obtain that prefix from `GET /api/v1/context`.
+Use Blob ABAC conditions or a controlled upload service to restrict direct
+Storage access; container-wide upload/read roles would bypass namespace isolation
+outside this API. Separate accounts/containers are appropriate for stronger
+tenant boundaries.
+
+Do not give API callers direct access to the
 entire output container unless deliberately authorized: that would bypass the
 API's per-job ownership checks.
 

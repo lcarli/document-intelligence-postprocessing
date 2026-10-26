@@ -136,9 +136,11 @@ states remain unchanged. No documents are uploaded and no Azure service is calle
 
 ## Integrate after DI
 
-1. Save the **original document bytes** and the completed REST **`analyzeResult`
+1. Call `GET /api/v1/context` with your access token to obtain your `input_prefix`.
+   Save the **original document bytes** and the completed REST **`analyzeResult`
    object** in the configured private input container. Do not save the outer
-   polling response as the analysis object.
+   polling response as the analysis object. Both blob names must start with your
+   returned prefix; cross-owner references are rejected before scheduling.
 2. Capture the exact, quoted ETag of each uploaded blob.
 3. Submit their relative names and ETags with an authorized Entra v2 access token.
 4. Poll the returned status path. Retrieve the result after runtime completion.
@@ -154,11 +156,11 @@ Content-Type: application/json
 
 {
   "document": {
-    "name": "documents/synthetic-form.pdf",
+    "name": "owners/REPLACE_WITH_OWNER_HASH/documents/synthetic-form.pdf",
     "etag": "\"0x8D0000000000001\""
   },
   "analysis": {
-    "name": "analyses/synthetic-form.json",
+    "name": "owners/REPLACE_WITH_OWNER_HASH/analyses/synthetic-form.json",
     "etag": "\"0x8D0000000000002\""
   }
 }

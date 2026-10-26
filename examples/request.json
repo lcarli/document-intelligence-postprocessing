@@ -1,10 +1,10 @@
 {
   "document": {
-    "name": "documents/synthetic-form.pdf",
+    "name": "owners/REPLACE_WITH_OWNER_HASH/documents/synthetic-form.pdf",
     "etag": "\"0x8D0000000000001\""
   },
   "analysis": {
-    "name": "analyses/synthetic-form.json",
+    "name": "owners/REPLACE_WITH_OWNER_HASH/analyses/synthetic-form.json",
     "etag": "\"0x8D0000000000002\""
   }
 }

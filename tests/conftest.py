@@ -51,6 +51,6 @@ def config() -> Settings:
 @pytest.fixture
 def submission() -> Submission:
     return Submission(
-        document=BlobReference(name="documents/synthetic.png", etag='"v1"'),
-        analysis=BlobReference(name="analyses/synthetic.json", etag='"v1"'),
+        document=BlobReference(name="owners/owner-a/documents/synthetic.png", etag='"v1"'),
+        analysis=BlobReference(name="owners/owner-a/analyses/synthetic.json", etag='"v1"'),
     )

@@ -157,7 +157,27 @@ def test_activity_entrypoints_and_safe_failures(http_setup: tuple[Any, Any, Any]
 
 
 def test_function_discovery_and_generic_response() -> None:
-    assert len(FUNCTIONS) == 6
+    assert len(FUNCTIONS) == 7
     assert function_app.response({"status": "ok"}).status_code == 200
     with pytest.raises(RuntimeError, match="unexpected"):
         function_app.error_response(RuntimeError("unexpected"))
+
+
+def test_authorized_input_context(http_setup: tuple[Any, Any, Any]) -> None:
+    response = asyncio.run(FUNCTIONS["caller_context"](request("GET")))
+    assert response.status_code == 200
+    assert json.loads(response.get_body()) == {"input_prefix": "owners/owner-a/"}
+
+
+def test_cross_owner_input_submission_is_rejected(
+    http_setup: tuple[Any, Any, Any],
+    submission: Submission,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(function_app, "authenticate", lambda header, config: "owner-b")
+    client = SimpleNamespace(start_new=AsyncMock())
+    response = asyncio.run(
+        FUNCTIONS["submit"](request("POST", submission.model_dump_json().encode()), client)
+    )
+    assert response.status_code == 403
+    client.start_new.assert_not_called()

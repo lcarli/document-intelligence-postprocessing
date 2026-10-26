@@ -37,6 +37,10 @@ def key(identifier: str, suffix: str) -> str:
     return f"jobs/{job_id(identifier)}/{suffix}.json"
 
 
+def input_prefix(owner: str) -> str:
+    return f"owners/{owner}/"
+
+
 def report_suffix(spec: ProcessorSpec) -> str:
     if spec not in registered_specs():
         raise ProcessingError("processor_version_unavailable")
@@ -50,6 +54,12 @@ class PostprocessingService:
     def submit(
         self, submission: Submission, owner: str, settings: dict[str, ProcessorSettings]
     ) -> JobManifest:
+        prefix = input_prefix(owner)
+        if not all(
+            reference.name.startswith(prefix)
+            for reference in (submission.document, submission.analysis)
+        ):
+            raise ProcessingError("input_namespace_forbidden")
         specs = registered_specs()
         if set(settings) != {spec.name for spec in specs}:
             raise ProcessingError("processor_configuration_mismatch")
